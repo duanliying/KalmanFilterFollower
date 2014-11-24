@@ -8,7 +8,7 @@
 #include <fstream>
 #include <cmath>
 #include "Aria.h"
-#include "GnuPlotLogger.hpp"
+#include "Gnuplot/GnuPlotLogger.hpp"
 
 using namespace std;
 
@@ -58,10 +58,7 @@ int main( int argc, char **argv ){
 
    robot.runAsync(true);
 
-   if( !laserConnector.connectLasers(false, // continue after connection failures
-         false,  // add only connected lasers to ArRobot
-         true    // add all lasers to ArRobot
-         ) ){
+   if( !laserConnector.connectLasers(false, false, true) ){
       printf("Could not connect to lasers... exiting\n");
       Aria::exit(2);
    }
@@ -75,11 +72,12 @@ int main( int argc, char **argv ){
 
    robot.lock();
 
-   if( robot.getOrigRobotConfig()->getHasGripper() )
+   if( robot.getOrigRobotConfig()->getHasGripper() ){
       new ArModeGripper(&robot, "gripper", 'g', 'G');
-   else
-      ArLog::log(ArLog::Normal,
-            "Robot does not indicate that it has a gripper.");
+   }else{
+      ArLog::log(ArLog::Normal, "Robot does not have a gripper.");
+   }
+
    ArModeActs actsMode(&robot, "acts", 'a', 'A');
    ArModeTCM2 tcm2(&robot, "tcm2", 'm', 'M', compass);
    ArModeIO io(&robot, "io", 'i', 'I');

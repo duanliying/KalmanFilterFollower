@@ -4,7 +4,7 @@
  *  Created on: Nov 24, 2014
  *      Author: djfrmd
  */
-#include "GnuPlotLogger.hpp"
+#include "../Gnuplot/GnuPlotLogger.hpp"
 
 GnuPlotLogger::GnuPlotLogger( string filename ){
    output.open(filename.c_str(), ios::out | ios::trunc);
