@@ -27,9 +27,9 @@
 *.exe
 *.out
 *.app
-Release/follow
-Release/demo
-Release/wander
+/Object/track
+/Kalman/kalman
+/Reactive/reactive
 
-# Gnuplot dat files
+# Data files
 *.dat

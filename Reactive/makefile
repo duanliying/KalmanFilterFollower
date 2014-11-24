@@ -8,7 +8,8 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Gnuplot/subdir.mk
+-include Source/TrackedObject/subdir.mk
+-include Source/Gnuplot/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -38,19 +39,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: follow
+all: reactive
 
 # Tool invocations
-follow: $(OBJS) $(USER_OBJS)
+reactive: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L/usr/local/Aria/lib -o "follow" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/usr/local/Aria/lib -o "reactive" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) follow
+	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) reactive
 	-@echo ' '
 
 .PHONY: all clean dependents

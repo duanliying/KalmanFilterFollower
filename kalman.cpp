@@ -8,7 +8,7 @@
 #include <fstream>
 #include <cmath>
 #include "Aria.h"
-#include "Gnuplot/GnuPlotLogger.hpp"
+#include "Source/Gnuplot/GnuPlotLogger.hpp"
 
 using namespace std;
 

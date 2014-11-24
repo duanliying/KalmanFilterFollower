@@ -4,13 +4,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../follower.cpp 
+../kalman.cpp 
 
 OBJS += \
-./follower.o 
+./kalman.o 
 
 CPP_DEPS += \
-./follower.d 
+./kalman.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
