@@ -5,8 +5,10 @@
  *     Authors: Chris Arnold & Dallas Fletchall
  */
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include "Aria.h"
+#include "GnuPlotLogger.hpp"
 
 using namespace std;
 
@@ -96,17 +98,16 @@ int main( int argc, char **argv ){
    robot.comInt(ArCommands::ENABLE, 1);
    robot.unlock();
 
-   ArPose c_pose;
-   while( 1 ){
-      ArUtil::sleep(1000);
-      c_pose = robot.getPose();
-      cout << "Robot position, x: " << c_pose.getX() << "y: ";
-      cout << c_pose.getY() << "th: " << c_pose.getTh() << endl;
+   GnuPlotLogger log("follower.dat");
+
+   int i = 0;
+   while( i++ < 100 ){
+      ArUtil::sleep(500);
+      log.write(robot.getPose());
    }
 
-      robot.waitForRunExit();
+   robot.waitForRunExit();
 
    Aria::exit(0);
    return 0;
 }
-

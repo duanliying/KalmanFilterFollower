@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../Logger.cpp \
 ../follower.cpp 
 
 OBJS += \
+./Logger.o \
 ./follower.o 
 
 CPP_DEPS += \
+./Logger.d \
 ./follower.d 
 
 
