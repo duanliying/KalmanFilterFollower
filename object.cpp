@@ -100,7 +100,7 @@ int main( int argc, char** argv ){
 
    robot.unlock();
 
-   PathLog log("../TrackedObject/object_path.dat");
+   PathLog log("Data/object.dat");
    int i = 0;
    while( i++ < 100 ){
 

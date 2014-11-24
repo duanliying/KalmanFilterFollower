@@ -96,7 +96,7 @@ int main( int argc, char **argv ){
    robot.comInt(ArCommands::ENABLE, 1);
    robot.unlock();
 
-   GnuPlotLogger log("follower.dat");
+   GnuPlotLogger log("reactive.dat");
 
    int i = 0;
    while( i++ < 100 ){
