@@ -30,3 +30,6 @@
 Release/follow
 Release/demo
 Release/wander
+
+# Gnuplot dat files
+*.dat
