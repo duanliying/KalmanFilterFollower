@@ -18,10 +18,23 @@ void moveRobot( ArRobot *robot, ArPose pose ){
 
 void moveRobot( ArRobot *robot, double dist, double dir ){
 
+   turn(robot, dir);
+   translate(robot, dist);
+
+}
+
+void turn( ArRobot *robot, double angle ){
+
    robot->lock();
-   robot->setHeading(dir);
-   robot->move(dist);
+   robot->setHeading(angle);
    robot->unlock();
 
 }
 
+void translate( ArRobot *robot, double dist ){
+
+   robot->lock();
+   robot->move(dist);
+   robot->unlock();
+
+}
