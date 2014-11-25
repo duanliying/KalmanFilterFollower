@@ -98,6 +98,8 @@ int main( int argc, char** argv ){
    teleop.activate();
 
    robot.comInt(ArCommands::ENABLE, 1);
+   robot.setAbsoluteMaxTransVel(850);
+   robot.setAbsoluteMaxRotVel(25);
 
    robot.unlock();
 
@@ -112,8 +114,6 @@ int main( int argc, char** argv ){
    }
 
    cout << "Path Complete" << endl;
-
-   robot.waitForRunExit();
 
    Aria::exit(0);
    return 0;

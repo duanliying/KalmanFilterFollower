@@ -74,10 +74,12 @@ int main( int argc, char** argv ){
 
    robot.runAsync(true);
 
-   ArUtil::sleep(1000);
+   ArUtil::sleep(500);
 
    robot.lock();
 
+   robot.setAbsoluteMaxTransVel(850);
+   robot.setAbsoluteMaxRotVel(50);
    robot.comInt(ArCommands::ENABLE, 1);
 
    robot.unlock();
