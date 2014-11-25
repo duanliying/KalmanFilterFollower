@@ -5,13 +5,32 @@
  *     Authors: Chris Arnold & Dallas Fletchall
  */
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "Aria.h"
 #include "PathLog.hpp"
 #include "robotMotions.hpp"
+#include "ArPoseList.hpp"
 
 using namespace std;
 
 int main( int argc, char** argv ){
+
+   // Read all poses from the file
+   ArPoseList poses;
+   ifstream input("../Data/object.dat", ifstream::in);
+   if(!input.is_open()){
+      cout << "Error opening file" << endl;
+      return 1;
+   }
+
+   string line;
+   while(getline(input, line)){
+      cout << line << endl;
+   }
+   input.close();
+
+   return 0;
 
    Aria::init();
 
