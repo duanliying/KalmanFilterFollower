@@ -5,6 +5,7 @@
  *     Authors: Chris Arnold & Dallas Fletchall
  */
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <string>
 #include "Aria.h"
@@ -26,11 +27,15 @@ int main( int argc, char** argv ){
 
    string line;
    while(getline(input, line)){
-      cout << line << endl;
+      istringstream i(line);
+      double x, y, th;
+      i >> x >> y >> th;
+      ArPose pose(x,y,th);
+      poses.addPose(pose);
+
    }
    input.close();
 
-   return 0;
 
    Aria::init();
 
@@ -100,27 +105,25 @@ int main( int argc, char** argv ){
    }else{
       ArLog::log(ArLog::Normal, "Robot does not have a gripper.");
    }
-   ArModeActs actsMode(&robot, "acts", 'a', 'A');
-   ArModeTCM2 tcm2(&robot, "tcm2", 'm', 'M', compass);
-   ArModeIO io(&robot, "io", 'i', 'I');
-   ArModeConfig cfg(&robot, "report robot config", 'o', 'O');
-   ArModeCommand command(&robot, "command", 'd', 'D');
-   ArModeCamera camera(&robot, "camera", 'c', 'C');
-   ArModePosition position(&robot, "position", 'p', 'P', &gyro);
-   ArModeSonar sonar(&robot, "sonar", 's', 'S');
-   ArModeBumps bumps(&robot, "bumps", 'b', 'B');
-   ArModeLaser laser(&robot, "laser", 'l', 'L');
-   ArModeWander wander(&robot, "wander", 'w', 'W');
-   ArModeUnguardedTeleop unguardedTeleop(&robot, "unguarded teleop", 'u', 'U');
-   ArModeTeleop teleop(&robot, "teleop", 't', 'T');
 
-   teleop.activate();
 
    robot.comInt(ArCommands::ENABLE, 1);
 
    robot.unlock();
 
-   robot.waitForRunExit();
+   PathLog log("../Data/comparison.dat");
+
+
+   ArPose pose;
+   while(poses.getPose(&pose)){
+
+      moveRobot(&robot, pose);
+      log.write(robot.getPose());
+      ArUtil::sleep(500);
+      //cout << "x: " << pose.getX() << " y: " << pose.getY() << " th: " << pose.getTh() << endl;
+   }
+
+
 
    Aria::exit(0);
    return 0;

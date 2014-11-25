@@ -12,7 +12,6 @@ using namespace std;
 
 void moveRobot( ArRobot *robot, ArPose pose ){
 
-   cout << robot->findAngleTo(pose) << ":" << robot->findDistanceTo(pose) << endl;
    moveRobot(robot, robot->findDistanceTo(pose), robot->findAngleTo(pose));
 
 }

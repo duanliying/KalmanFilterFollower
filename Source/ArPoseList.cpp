@@ -5,6 +5,8 @@
  *      Author: djfrmd
  */
 #include "ArPoseList.hpp"
+#include <iostream>
+using namespace std;
 
 ArPoseList::ArPoseList(){
 
@@ -28,6 +30,7 @@ ArPoseList::~ArPoseList(){
 bool ArPoseList::getPose( ArPose *retVal ){
 
    if( head == NULL ){
+      retVal = NULL;
       return false;
    }
 
