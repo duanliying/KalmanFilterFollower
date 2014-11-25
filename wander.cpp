@@ -44,10 +44,7 @@ int main( int argc, char** argv ){
    parser.loadDefaultArguments();
 
    ArRobot robot;
-
    ArRobotConnector robotConnector(&parser, &robot);
-
-   ArAnalogGyro gyro(&robot);
 
    if( !robotConnector.connectRobot() ){
 
@@ -64,48 +61,22 @@ int main( int argc, char** argv ){
       ArLog::log(ArLog::Terse, "Internal error: connection failed");
    }
 
-   ArLaserConnector laserConnector(&parser, &robot, &robotConnector);
-
-   ArCompassConnector compassConnector(&parser);
-
    if( !Aria::parseArgs() || !parser.checkHelpAndWarnUnparsed() ){
       Aria::logOptions();
       Aria::exit(1);
       return 1;
    }
 
-   ArSonarDevice sonarDev;
-
    ArKeyHandler keyHandler;
    Aria::setKeyHandler(&keyHandler);
-
    robot.attachKeyHandler(&keyHandler);
    printf("You may press escape to exit\n");
 
-   robot.addRangeDevice(&sonarDev);
-
    robot.runAsync(true);
-
-   if( !laserConnector.connectLasers(false, false, true) ){
-      printf("Could not connect to lasers... exiting\n");
-      Aria::exit(2);
-   }
-
-   ArTCM2 *compass = compassConnector.create(&robot);
-   if( compass && !compass->blockingConnect() ){
-      compass = NULL;
-   }
 
    ArUtil::sleep(1000);
 
    robot.lock();
-
-   if( robot.getOrigRobotConfig()->getHasGripper() ){
-      new ArModeGripper(&robot, "gripper", 'g', 'G');
-   }else{
-      ArLog::log(ArLog::Normal, "Robot does not have a gripper.");
-   }
-
 
    robot.comInt(ArCommands::ENABLE, 1);
 
@@ -120,10 +91,8 @@ int main( int argc, char** argv ){
       moveRobot(&robot, pose);
       log.write(robot.getPose());
       ArUtil::sleep(500);
-      //cout << "x: " << pose.getX() << " y: " << pose.getY() << " th: " << pose.getTh() << endl;
+
    }
-
-
 
    Aria::exit(0);
    return 0;
