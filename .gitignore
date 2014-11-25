@@ -30,6 +30,7 @@
 /Object/object
 /Kalman/kalman
 /Reactive/reactive
+/Wander/wander
 
 # Data files
 *.dat
