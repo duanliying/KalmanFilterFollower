@@ -8,8 +8,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Source/TrackedObject/subdir.mk
--include Source/Gnuplot/subdir.mk
+-include Source/subdir.mk
 -include subdir.mk
 -include objects.mk
 

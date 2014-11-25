@@ -6,7 +6,8 @@
  */
 #include <iostream>
 #include "Aria.h"
-#include "Source/TrackedObject/PathLog.hpp"
+#include "PathLog.hpp"
+#include "robotMotions.hpp"
 
 using namespace std;
 
@@ -100,7 +101,25 @@ int main( int argc, char** argv ){
 
    robot.unlock();
 
-   PathLog log("Data/object.dat");
+   PathLog log("../Data/object.dat");
+
+   robot.setMoveDoneDist(10);
+
+   // Make the robot go to a generic pose
+   ArPose pose(100, 100, 10);
+
+   moveRobot(&robot, 100, 10);
+   //moveRobot(&robot, pose);
+
+//   robot.lock();
+//   robot.setRotVel(100);
+//   robot.unlock();
+
+   cout << "Max Acceleration: " << robot.getAbsoluteMaxTransAccel() << endl;
+   cout << "Max Deceleration: " << robot.getAbsoluteMaxTransDecel() << endl;
+   cout << "Max Velocity: " << robot.getAbsoluteMaxTransVel() << endl;
+   cout << "Max Negative Velocity: " << robot.getAbsoluteMaxTransNegVel() << endl;
+
    int i = 0;
    while( i++ < 100 ){
 
