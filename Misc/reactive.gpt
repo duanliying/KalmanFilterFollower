@@ -8,8 +8,8 @@ set ylabel 'y-coordinate(mm)';
 # Move the legend outside the graph
 set key outside;
 set grid;
-set xtics 2000;
-set ytics 2000;
+set xtics 5000;
+set ytics 5000;
 
 # Plot the two graphs
 plot '../Data/wander.dat' using 1:2 with lines title 'Object', \
