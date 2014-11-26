@@ -4,26 +4,24 @@
 
 # Start the MobileSim program
 ./msim.sh &
+sleep 2
 
 # Wait for user input before starting to record path of object
-echo "Press Enter to Continue:"
-read
+./pause.sh
 ./object.sh
 
 # Wander Program
-echo "Press Enter to Continue:"
-read
+./pause.sh
 ./wander.sh
-# Plot the graph of the object and wander to show similarity
 gnuplot -p ../Misc/path_duplication.gpt
 
 # Reactive Program
-#echo "Press Enter to Continue:"
-#read
-#./wander.sh
-# TODO: Plot the graph of the wandering and reactive tracking robots
+./pause.sh
+./reactive.sh
+gnuplot -p ../Misc/reactive.gpt
 
 # Kalman Program
+clear
 # TODO: Create Kalman program and script
 # TODO: Plot the graph of the wandering and kalman tracking robots
 

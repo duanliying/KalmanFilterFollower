@@ -13,4 +13,4 @@ set ytics 2000;
 
 # Plot the two graphs
 plot '../Data/object.dat' using 1:2 with lines title 'Original', \
-'../Data/comparison.dat' using 1:2 with lines linecolor rgb "blue" title "Duplicated Path";
+'../Data/wander.dat' using 1:2 with lines linecolor rgb "blue" title "Duplicated Path";

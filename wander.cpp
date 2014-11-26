@@ -81,7 +81,7 @@ int main( int argc, char** argv ){
 
    robot.unlock();
 
-   PathLog log("../Data/comparison.dat");
+   PathLog log("../Data/wander.dat");
 
    ArPose pose;
    while( poses.getPose(&pose) ){
