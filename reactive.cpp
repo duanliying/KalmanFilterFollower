@@ -58,11 +58,12 @@ int main( int argc, char **argv ){
    robot.moveTo(pose);
 
    printf("Connected\n");
-   ArUtil::sleep(2000);
+   ArUtil::sleep(1000);
 
    PathLog log("../Data/reactive.dat");
+   int stop = 10;
 
-   while( 1 ){
+   while( stop > 0 ){
 
       sick.lockDevice();
       dist = sick.currentReadingPolar(-90, 90, &angle);
@@ -72,11 +73,18 @@ int main( int argc, char **argv ){
       dist = (dist > 30000) ? 0 : dist - IDEAL_DISTANCE;
       trackRobot(&robot, dist, angle);
       log.write(robot.getPose());
+
+      // Determine if the robot is done tracking
+      if( abs(dist) < 5 && abs(angle) < 5 ){
+         stop--;
+      }else{
+         stop = 5;
+      }
       ArUtil::sleep(500);
 
    }
 
-   Aria::shutdown();
+   Aria::exit(0);
    return 0;
 }
 
