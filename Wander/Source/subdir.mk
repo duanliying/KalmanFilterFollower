@@ -5,18 +5,24 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Source/ArPoseList.cpp \
+../Source/Filter.cpp \
+../Source/Filter2.cpp \
 ../Source/GnuPlotLogger.cpp \
 ../Source/PathLog.cpp \
 ../Source/robotMotions.cpp 
 
 OBJS += \
 ./Source/ArPoseList.o \
+./Source/Filter.o \
+./Source/Filter2.o \
 ./Source/GnuPlotLogger.o \
 ./Source/PathLog.o \
 ./Source/robotMotions.o 
 
 CPP_DEPS += \
 ./Source/ArPoseList.d \
+./Source/Filter.d \
+./Source/Filter2.d \
 ./Source/GnuPlotLogger.d \
 ./Source/PathLog.d \
 ./Source/robotMotions.d 

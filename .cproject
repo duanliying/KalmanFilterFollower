@@ -25,6 +25,7 @@
 								<option id="gnu.cpp.compiler.exe.release.option.debugging.level.1823644999" name="Debug Level" superClass="gnu.cpp.compiler.exe.release.option.debugging.level" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.971054884" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/usr/local/Aria/include"/>
+									<listOptionValue builtIn="false" value="/usr/local/lib"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Headers}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.include.files.2037947061" name="Include files (-include)" superClass="gnu.cpp.compiler.option.include.files"/>
@@ -275,5 +276,19 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Kalman">
+			<resource resourceType="PROJECT" workspacePath="/KalmanFilterFollower"/>
+		</configuration>
+		<configuration configurationName="Reactive">
+			<resource resourceType="PROJECT" workspacePath="/KalmanFilterFollower"/>
+		</configuration>
+		<configuration configurationName="Wander">
+			<resource resourceType="PROJECT" workspacePath="/KalmanFilterFollower"/>
+		</configuration>
+		<configuration configurationName="Object">
+			<resource resourceType="PROJECT" workspacePath="/KalmanFilterFollower"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
