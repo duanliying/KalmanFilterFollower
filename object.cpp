@@ -98,15 +98,13 @@ int main( int argc, char** argv ){
    teleop.activate();
 
    robot.comInt(ArCommands::ENABLE, 1);
-   robot.setAbsoluteMaxTransVel(850);
-   robot.setAbsoluteMaxRotVel(25);
 
    robot.unlock();
 
    PathLog log("../Data/object.dat");
 
    int i = 0;
-   while( i++ < 50 ){
+   while( i++ < 100 ){
 
       ArUtil::sleep(500);
       log.write(robot.getPose());

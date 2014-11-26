@@ -1,111 +1,86 @@
-/*
- * follower.cpp
- *
- *  Created on: Nov 23, 2014
- *     Authors: Chris Arnold & Dallas Fletchall
- */
-#include <iostream>
-#include <fstream>
-#include <cmath>
 #include "Aria.h"
-#include "GnuPlotLogger.hpp"
+#include <iostream>
+#include <cmath>
+#include "robotMotions.hpp"
+#include "PathLog.hpp"
+#define IDEAL_DISTANCE 1500
 
 using namespace std;
 
-int main( int argc, char **argv ){
-   cout << "Robot position: " << sqrt(9) << endl;
+void printDistAng( double d, double a );
 
-   Aria::init();
-   ArArgumentParser parser(&argc, argv);
-   parser.loadDefaultArguments();
+int main( int argc, char **argv ){
+   // parse our args and make sure they were all accounted for
+   ArSimpleConnector connector(&argc, argv);
 
    ArRobot robot;
-   ArRobotConnector robotConnector(&parser, &robot);
-   ArAnalogGyro gyro(&robot);
+   ArSick sick;
+   double dist, angle = 0;
+   std::list<ArPoseWithTime *>::iterator it;
 
-   if( !robotConnector.connectRobot() ){
-      if( !parser.checkHelpAndWarnUnparsed() ){
-         ArLog::log(ArLog::Terse, "Could not connect to robot");
-      }else{
-         ArLog::log(ArLog::Terse, "Error, could not connect to robot.");
-         Aria::logOptions();
-         Aria::exit(1);
-      }
-   }
-
-   if( !robot.isConnected() ){
-      ArLog::log(ArLog::Terse,
-            "Internal error: robot connector succeeded but ArRobot::isConnected() is false!");
-   }
-
-   ArLaserConnector laserConnector(&parser, &robot, &robotConnector);
-   ArCompassConnector compassConnector(&parser);
-   if( !Aria::parseArgs() || !parser.checkHelpAndWarnUnparsed() ){
-      Aria::logOptions();
-      Aria::exit(1);
-      return 1;
-   }
-
-   ArSonarDevice sonarDev;
-
+   // Allow for esc to release robot
    ArKeyHandler keyHandler;
    Aria::setKeyHandler(&keyHandler);
-
    robot.attachKeyHandler(&keyHandler);
    printf("You may press escape to exit\n");
 
-   robot.addRangeDevice(&sonarDev);
+   if( !connector.parseArgs() || argc > 1 ){
+      connector.logOptions();
+      exit(1);
+   }
 
+   // add the laser to the robot
+   robot.addRangeDevice(&sick);
+
+   // try to connect, if we fail exit
+   if( !connector.connectRobot(&robot) ){
+      printf("Could not connect to robot... exiting\n");
+      Aria::shutdown();
+      return 1;
+   }
+
+   // start the robot running, true so that if we lose connection the run stops
    robot.runAsync(true);
 
-   if( !laserConnector.connectLasers(false, false, true) ){
-      printf("Could not connect to lasers... exiting\n");
-      Aria::exit(2);
+   // now set up the laser
+   connector.setupLaser(&sick);
+
+   sick.runAsync();
+
+   if( !sick.blockingConnect() ){
+      printf("Could not connect to SICK laser... exiting\n");
+      Aria::shutdown();
+      return 1;
    }
 
-   ArTCM2 *compass = compassConnector.create(&robot);
-   if( compass && !compass->blockingConnect() ){
-      compass = NULL;
-   }
-
-   ArUtil::sleep(1000);
-
-   robot.lock();
-
-   if( robot.getOrigRobotConfig()->getHasGripper() ){
-      new ArModeGripper(&robot, "gripper", 'g', 'G');
-   }else{
-      ArLog::log(ArLog::Normal, "Robot does not have a gripper.");
-   }
-
-   ArModeActs actsMode(&robot, "acts", 'a', 'A');
-   ArModeTCM2 tcm2(&robot, "tcm2", 'm', 'M', compass);
-   ArModeIO io(&robot, "io", 'i', 'I');
-   ArModeConfig cfg(&robot, "report robot config", 'o', 'O');
-   ArModeCommand command(&robot, "command", 'd', 'D');
-   ArModeCamera camera(&robot, "camera", 'c', 'C');
-   ArModePosition position(&robot, "position", 'p', 'P', &gyro);
-   ArModeSonar sonar(&robot, "sonar", 's', 'S');
-   ArModeBumps bumps(&robot, "bumps", 'b', 'B');
-   ArModeLaser laser(&robot, "laser", 'l', 'L');
-   ArModeWander wander(&robot, "wander", 'w', 'W');
-   ArModeUnguardedTeleop unguardedTeleop(&robot, "unguarded teleop", 'u', 'U');
-   ArModeTeleop teleop(&robot, "teleop", 't', 'T');
-
-   teleop.activate();
    robot.comInt(ArCommands::ENABLE, 1);
-   robot.unlock();
+   ArPose pose(0, -1000, 0);
+   robot.moveTo(pose);
 
-   GnuPlotLogger log("reactive.dat");
+   printf("Connected\n");
+   ArUtil::sleep(2000);
 
-   int i = 0;
-   while( i++ < 100 ){
-      ArUtil::sleep(500);
+   PathLog log("../Data/reactive.dat");
+
+   while( 1 ){
+
+      sick.lockDevice();
+      dist = sick.currentReadingPolar(-90, 90, &angle);
+      sick.unlockDevice();
+
+      // If nothing is picked up, quit translating
+      dist = (dist > 30000) ? 0 : dist - IDEAL_DISTANCE;
+      trackRobot(&robot, dist, angle);
       log.write(robot.getPose());
+      ArUtil::sleep(500);
+
    }
 
-   robot.waitForRunExit();
-
-   Aria::exit(0);
+   Aria::shutdown();
    return 0;
+}
+
+void printDistAng( double d, double a ){
+
+   cout << "D: " << d << " A: " << a << endl;
 }

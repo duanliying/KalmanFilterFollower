@@ -20,22 +20,21 @@ int main( int argc, char** argv ){
    // Read all poses from the file
    ArPoseList poses;
    ifstream input("../Data/object.dat", ifstream::in);
-   if(!input.is_open()){
+   if( !input.is_open() ){
       cout << "Error opening file" << endl;
       return 1;
    }
 
    string line;
-   while(getline(input, line)){
+   while( getline(input, line) ){
       istringstream i(line);
       double x, y, th;
       i >> x >> y >> th;
-      ArPose pose(x,y,th);
+      ArPose pose(x, y, th);
       poses.addPose(pose);
 
    }
    input.close();
-
 
    Aria::init();
 
@@ -78,17 +77,14 @@ int main( int argc, char** argv ){
 
    robot.lock();
 
-   robot.setAbsoluteMaxTransVel(850);
-   robot.setAbsoluteMaxRotVel(50);
    robot.comInt(ArCommands::ENABLE, 1);
 
    robot.unlock();
 
    PathLog log("../Data/comparison.dat");
 
-
    ArPose pose;
-   while(poses.getPose(&pose)){
+   while( poses.getPose(&pose) ){
 
       moveRobot(&robot, pose);
       log.write(robot.getPose());

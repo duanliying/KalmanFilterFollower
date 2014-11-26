@@ -13,7 +13,9 @@
 void moveRobot( ArRobot *robot, double dist, double dir );
 void moveRobot( ArRobot *robot, ArPose pose );
 
-void turn( ArRobot *robot, double angle );
+void trackRobot( ArRobot *robot, double dist, double dir );
+void trackRobot( ArRobot *robot, ArPose pose );
+
 void translate( ArRobot *robot, double dist );
 
 #endif /* SOURCE_ROBOTMOTIONS_HPP_ */
