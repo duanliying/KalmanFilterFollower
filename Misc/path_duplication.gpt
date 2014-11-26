@@ -1,0 +1,16 @@
+# Gnuplot configuration file for Path Duplication Graph
+
+# Set the window title and axis labels
+set term wxt title 'Path Duplication Graph';
+set xlabel 'x-coordinate(mm)';
+set ylabel 'y-coordinate(mm)';
+
+# Move the legend outside the graph
+set key outside;
+set grid;
+set xtics 2000;
+set ytics 2000;
+
+# Plot the two graphs
+plot '../Data/object.dat' using 1:2 with lines title 'Original', \
+'../Data/comparison.dat' using 1:2 with lines linecolor rgb "blue" title "Duplicated Path";

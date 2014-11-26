@@ -11,13 +11,16 @@ read
 ./object.sh
 
 # Wander Program
-./wander.sh
-# TODO: Plot the graph of the object and wander to show similarity
-
-# Reactive Program
 echo "Press Enter to Continue:"
 read
 ./wander.sh
+# Plot the graph of the object and wander to show similarity
+gnuplot -p ../Misc/path_duplication.gpt
+
+# Reactive Program
+#echo "Press Enter to Continue:"
+#read
+#./wander.sh
 # TODO: Plot the graph of the wandering and reactive tracking robots
 
 # Kalman Program
