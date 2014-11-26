@@ -106,7 +106,7 @@ int main( int argc, char** argv ){
    PathLog log("../Data/object.dat");
 
    int i = 0;
-   while( i++ < 100 ){
+   while( i++ < 50 ){
 
       ArUtil::sleep(500);
       log.write(robot.getPose());
