@@ -4,13 +4,37 @@
  *  Created on: Nov 24, 2014
  *      Author: djfrmd
  */
-#include "ArPoseList.hpp"
+#include <fstream>
 #include <iostream>
+#include <sstream>
+#include "ArPoseList.hpp"
+
 using namespace std;
 
 ArPoseList::ArPoseList(){
 
    head = NULL;
+
+}
+
+ArPoseList::ArPoseList( string file_name ){
+
+   ifstream input("../Data/object.dat", ifstream::in);
+      if( !input.is_open() ){
+         cout << "Error opening file" << endl;
+         exit(1);
+      }
+
+      string line;
+      while( getline(input, line) ){
+         istringstream i(line);
+         double x, y, th;
+         i >> x >> y >> th;
+         ArPose pose(x, y, th);
+         addPose(pose);
+
+      }
+      input.close();
 
 }
 

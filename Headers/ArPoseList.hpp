@@ -8,7 +8,10 @@
 #ifndef SOURCE_ARPOSELIST_HPP_
 #define SOURCE_ARPOSELIST_HPP_
 
+#include <string>
 #include "Aria.h"
+
+using namespace std;
 
 class ArPoseList {
 
@@ -19,6 +22,7 @@ class ArPoseList {
 
    public:
       ArPoseList();
+      ArPoseList( string file_name );
       ~ArPoseList();
       bool getPose( ArPose *retVal );
       void addPose( ArPose pose );

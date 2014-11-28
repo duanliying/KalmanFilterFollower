@@ -5,8 +5,6 @@
  *     Authors: Chris Arnold & Dallas Fletchall
  */
 #include <iostream>
-#include <sstream>
-#include <fstream>
 #include <string>
 #include "Aria.h"
 #include "PathLog.hpp"
@@ -18,23 +16,7 @@ using namespace std;
 int main( int argc, char** argv ){
 
    // Read all poses from the file
-   ArPoseList poses;
-   ifstream input("../Data/object.dat", ifstream::in);
-   if( !input.is_open() ){
-      cout << "Error opening file" << endl;
-      return 1;
-   }
-
-   string line;
-   while( getline(input, line) ){
-      istringstream i(line);
-      double x, y, th;
-      i >> x >> y >> th;
-      ArPose pose(x, y, th);
-      poses.addPose(pose);
-
-   }
-   input.close();
+   ArPoseList poses("../Data/object.dat");
 
    Aria::init();
 
