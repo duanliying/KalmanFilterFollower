@@ -24,7 +24,8 @@ separate programs in this project.
 	 						 predict the upcoming position of the tracked 
 	 						 object.
 
-Misc/ contains all project files not needed for build. The project proposal is 
+Misc/ contains all project files not needed for build. Gnuplot format files, 
+*.gpt, for all grapsh generated for presentation. The project proposal is 
 included in this folder.
 
 Scripts/ contains bash scripts that will allow running the presentation on the 
