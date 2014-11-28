@@ -5,21 +5,24 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Source/ArPoseList.cpp \
+../Source/Distance.cpp \
 ../Source/Filter.cpp \
 ../Source/PathLog.cpp \
-../Source/robotMotions.cpp 
+../Source/RobotActions.cpp 
 
 OBJS += \
 ./Source/ArPoseList.o \
+./Source/Distance.o \
 ./Source/Filter.o \
 ./Source/PathLog.o \
-./Source/robotMotions.o 
+./Source/RobotActions.o 
 
 CPP_DEPS += \
 ./Source/ArPoseList.d \
+./Source/Distance.d \
 ./Source/Filter.d \
 ./Source/PathLog.d \
-./Source/robotMotions.d 
+./Source/RobotActions.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

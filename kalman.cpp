@@ -1,15 +1,13 @@
-#include "Aria.h"
-#include <iostream>
 #include <cmath>
-#include "robotMotions.hpp"
-#include "PathLog.hpp"
+#include <iostream>
+#include "Aria.h"
 #include "Filter.hpp"
+#include "PathLog.hpp"
+#include "RobotActions.hpp"
 
 #define IDEAL_DISTANCE 1500
 
 using namespace std;
-
-void printDistAng( double d, double a );
 
 int main( int argc, char **argv ){
    // parse our args and make sure they were all accounted for
@@ -78,9 +76,9 @@ int main( int argc, char **argv ){
    double dx;
    double dy;
 
-   int stop = 10;
+   int iterations_wo_movement = 0;
 
-   while( stop > 0 ){
+   while( iterations_wo_movement < CONSECUTIVE_NON_MOTIONS ){
 
       sick.lockDevice();
       dist = sick.currentReadingPolar(-90, 90, &angle);
@@ -90,11 +88,8 @@ int main( int argc, char **argv ){
       new_pose = robot.getPose();
       dx = new_pose.getX() - old_pose.getX();
       dy = new_pose.getY() - old_pose.getY();
-      kalmanFilter.filter(&dist,
-                          &angle,
-                          sqrt(dx*dx + dy*dy),
-                          new_pose.getTh() - old_pose.getTh()
-                         );
+      kalmanFilter.filter(&dist, &angle, sqrt(dx * dx + dy * dy),
+            new_pose.getTh() - old_pose.getTh());
       old_pose = new_pose;
 
       // If nothing is picked up, quit translating
@@ -103,20 +98,11 @@ int main( int argc, char **argv ){
       log.write(robot.getPose());
 
       // Determine if the robot is done tracking
-      if( abs(dist) < 5 && abs(angle) < 5 ){
-         stop--;
-      }else{
-         stop = 5;
-      }
+      isRobotTracking(&iterations_wo_movement, dist, angle);
       ArUtil::sleep(500);
 
    }
 
    Aria::exit(0);
    return 0;
-}
-
-void printDistAng( double d, double a ){
-
-   cout << "D: " << d << " A: " << a << endl;
 }

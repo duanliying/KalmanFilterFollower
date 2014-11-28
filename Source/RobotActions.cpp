@@ -10,7 +10,6 @@
 
 #define DISTANCE_STOP_BUFFER 10
 #define ANGLE_STOP_BUFFER 5
-#define CONSECUTIVE_NON_MOTIONS 5
 
 using namespace std;
 
@@ -57,9 +56,9 @@ void trackRobot( ArRobot *robot, double dist, double dir ){
 void isRobotTracking( int *count, double dist, double angle ){
 
    if( abs(dist) > DISTANCE_STOP_BUFFER || abs(angle) > ANGLE_STOP_BUFFER){
-      *count = *count + 1;
+      *count = 0;
    }else{
-      *count = CONSECUTIVE_NON_MOTIONS;
+      *count = *count + 1;
    }
 
 }
