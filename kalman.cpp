@@ -3,7 +3,7 @@
 #include <cmath>
 #include "robotMotions.hpp"
 #include "PathLog.hpp"
-#include "Filter2.hpp"
+#include "Filter.hpp"
 
 #define IDEAL_DISTANCE 1500
 
@@ -56,19 +56,27 @@ int main( int argc, char **argv ){
    }
 
    robot.comInt(ArCommands::ENABLE, 1);
-   ArPose pose(0, -1000, 0);
-   robot.moveTo(pose);
+   ArPose old_pose(0, -1000, 0);
+   ArPose new_pose;
+   robot.moveTo(old_pose);
 
    printf("Connected\n");
    ArUtil::sleep(1000);
 
    PathLog log("../Data/reactive.dat");
-   Filter2 kf_x(.04, 1.38, .06, 32, 0);
-   Filter2 kf_y(.04, 1.38, .06, 32, 1000);
-   double x_p;
-   double y_p;
-   double d_p;
-   double a_p;
+   Filter kalmanFilter(1, .9, .1, 1000, 90);
+
+   // Filter a few times before following
+   for( int i = 0; i < 10; i++ ){
+      sick.lockDevice();
+      dist = sick.currentReadingPolar(-90, 90, &angle);
+      sick.unlockDevice();
+      kalmanFilter.filter(&dist, &angle, 0, 0);
+      ArUtil::sleep(100);
+   }
+
+   double dx;
+   double dy;
 
    int stop = 10;
 
@@ -78,14 +86,20 @@ int main( int argc, char **argv ){
       dist = sick.currentReadingPolar(-90, 90, &angle);
       sick.unlockDevice();
 
-      x_p = kf_x.filter(dist*cos(angle));
-      y_p = kf_y.filter(dist*sin(angle));
-      d_p = sqrt(x_p * x_p + y_p * y_p);
-      a_p = atan2(y_p, x_p);
+      // Get the amount our robot has moved
+      new_pose = robot.getPose();
+      dx = new_pose.getX() - old_pose.getX();
+      dy = new_pose.getY() - old_pose.getY();
+      kalmanFilter.filter(&dist,
+                          &angle,
+                          sqrt(dx*dx + dy*dy),
+                          new_pose.getTh() - old_pose.getTh()
+                         );
+      old_pose = new_pose;
 
       // If nothing is picked up, quit translating
       dist = (dist > 30000) ? 0 : dist - IDEAL_DISTANCE;
-      trackRobot(&robot, d_p, a_p);
+      trackRobot(&robot, dist, angle);
       log.write(robot.getPose());
 
       // Determine if the robot is done tracking
