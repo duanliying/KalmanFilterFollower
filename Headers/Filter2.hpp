@@ -11,7 +11,7 @@
 class Filter2{
 
    public:
-      Filter2(double K, double P, double Q, double R, double X);
+      Filter2(double P, double Q, double R, double X);
       double filter(double measurement);
       double x, p, q, k, r;
 

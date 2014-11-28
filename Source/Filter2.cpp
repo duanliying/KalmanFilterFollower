@@ -6,12 +6,12 @@
  */
 #include "Filter2.hpp"
 
-Filter2::Filter2(double P, double Q, double K, double X, double R){
+Filter2::Filter2(double P, double Q, double R, double X){
 
+   k = 0;
    x = X;
    p = P;
    q = Q;
-   k = K;
    r = R;
 
 }
