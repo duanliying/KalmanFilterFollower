@@ -14,9 +14,7 @@ PathLog::PathLog( string filename ){
 
 PathLog::~PathLog(){
 
-   if( output.is_open() ){
-      output.close();
-   }
+   close();
 
 }
 
@@ -33,6 +31,14 @@ void PathLog::write( double x, double y, double theta ){
 void PathLog::write( ArPose pose ){
 
    write(pose.getX(), pose.getY(), pose.getTh());
+
+}
+
+void PathLog::close(){
+
+   if( output.is_open() ){
+      output.close();
+   }
 
 }
 

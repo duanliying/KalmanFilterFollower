@@ -17,6 +17,7 @@ class PathLog{
 
       void write(double x, double y, double theta);
       void write(ArPose pose);
+      void close();
 
    private:
       ofstream output;
