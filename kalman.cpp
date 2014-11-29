@@ -62,7 +62,7 @@ int main( int argc, char **argv ){
    printf("Connected\n");
    ArUtil::sleep(1000);
 
-   PathLog log("../Data/reactive.dat");
+   PathLog log("../Data/kalman.dat");
    Filter kFilter(1, .9, .1, 1000, 90);
 
    // Filter a few times before following
