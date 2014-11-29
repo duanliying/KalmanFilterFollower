@@ -1,15 +1,16 @@
-# Gnuplot configuration file for Distance Bar Graph
+# Gnuplot configuration file for Sensor Distance Error Graph
 
 # Set the window title and axis labels
-set term wxt title 'Total Distance Traveled Graph';
+set term wxt title 'Sensor Distance Graph';
+set xlabel 't(msec)';
 set ylabel 'Distance(mm)';
 
-
-# Make a bar graph
-set boxwidth .25;
-set style fill solid;
+# Move the legend outside the graph
+set key outside;
 set grid;
-set ytics 10000;
 
-# Plot the bar graph
-plot '../Data/distance.dat' using 2:3:xtic(1) with boxes lc rgb "blue" notitle;
+# Plot the Measured and Filtered
+plot '../Data/sensor.dat' using 1:2 with lines title 'Measured', \
+'../Data/sensor.dat' using 1:4 with lines linecolor rgb "blue" title "Filtered";
+
+set autoscale;

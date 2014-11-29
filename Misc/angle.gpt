@@ -1,0 +1,16 @@
+# Gnuplot configuration file for Sensor Angle Error Graph
+
+# Set the window title and axis labels
+set term wxt title 'Laser Angle Graph (Initial Guess = 45)';
+set xlabel 't(msec)';
+set ylabel 'Angle(degrees)';
+
+# Move the legend outside the graph
+set key outside;
+set grid;
+
+# Plot the Measured and Filtered
+plot '../Data/sensor.dat' using 1:3 with lines title 'Measured', \
+'../Data/sensor.dat' using 1:5 with lines linecolor rgb "blue" title "Filtered";
+
+set autoscale;

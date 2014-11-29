@@ -6,6 +6,12 @@
 ./msim.sh &
 sleep 2
 
+# Show sensor data using filter
+clear
+./sensor.sh
+gnuplot -p ../Misc/distance.gpt
+gnuplot -p ../Misc/angle.gpt
+
 # Wait for user input before starting to record path of object
 ./pause.sh
 ./object.sh
@@ -27,6 +33,6 @@ gnuplot -p ../Misc/kalman.gpt
 
 # Total Distance Plot
 ./distance_calc.sh
-gnuplot -p ../Misc/distance.gpt
+gnuplot -p ../Misc/total_distance.gpt
 
 
