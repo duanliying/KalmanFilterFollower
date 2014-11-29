@@ -21,10 +21,12 @@ gnuplot -p ../Misc/path_duplication.gpt
 gnuplot -p ../Misc/reactive.gpt
 
 # Kalman Program
-clear
-# TODO: Create Kalman program and script
-# TODO: Plot the graph of the wandering and kalman tracking robots
+./pause.sh
+./kalman.sh
+gnuplot -p ../Misc/kalman.gpt
 
-# TODO: Plot all graphs
+# Total Distance Plot
+./distance_calc.sh
+gnuplot -p ../Misc/distance.gpt
 
 

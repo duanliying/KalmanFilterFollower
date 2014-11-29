@@ -1,0 +1,15 @@
+# Gnuplot configuration file for Distance Bar Graph
+
+# Set the window title and axis labels
+set term wxt title 'Total Distance Traveled Graph';
+set ylabel 'Distance(mm)';
+
+
+# Make a bar graph
+set boxwidth .25;
+set style fill solid;
+set grid;
+set ytics 10000;
+
+# Plot the bar graph
+plot '../Data/distance.dat' using 2:3:xtic(1) with boxes lc rgb "blue" notitle;

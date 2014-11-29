@@ -86,7 +86,7 @@ int main( int argc, char** argv ){
 
    ofstream output;
    output.open("../Data/wander_dist.dat", ios::out | ios::trunc);
-   output << "# Wander distance" << endl << total_distance << endl;
+   output << "Wander .5 " << total_distance << endl;
    output.close();
 
    Aria::exit(0);

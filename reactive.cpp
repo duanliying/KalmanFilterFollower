@@ -89,7 +89,7 @@ int main( int argc, char **argv ){
 
    ofstream output;
    output.open("../Data/reactive_dist.dat", ios::out | ios::trunc);
-   output << endl << "# Reactive distance" << endl << total_distance << endl;
+   output << "Reactive 1 " << total_distance << endl;
    output.close();
 
    Aria::exit(0);
