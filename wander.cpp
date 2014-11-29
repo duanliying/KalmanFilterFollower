@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include "Aria.h"
+#include "Distance.hpp"
 #include "PathLog.hpp"
 #include "RobotActions.hpp"
 #include "ArPoseList.hpp"
@@ -65,14 +66,28 @@ int main( int argc, char** argv ){
 
    PathLog log("../Data/wander.dat");
 
-   ArPose pose;
+   ArPose pose, prev_pose = robot.getPose();
+   double total_distance = 0;
+
    while( poses.getPose(&pose) ){
 
+
       moveRobot(&robot, pose);
-      log.write(robot.getPose());
       ArUtil::sleep(500);
+      pose = robot.getPose();
+      log.write(pose);
+      total_distance += getDistance(prev_pose, pose);
+      prev_pose = pose;
 
    }
+
+   ArUtil::sleep(1000);
+   log.close();
+
+   ofstream output;
+   output.open("../Data/wander_dist.dat", ios::out | ios::trunc);
+   output << "# Wander distance" << endl << total_distance << endl;
+   output.close();
 
    Aria::exit(0);
    return 0;

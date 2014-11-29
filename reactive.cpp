@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include "Aria.h"
+#include "Distance.hpp"
 #include "PathLog.hpp"
 #include "RobotActions.hpp"
 
@@ -54,6 +55,8 @@ int main( int argc, char **argv ){
    robot.comInt(ArCommands::ENABLE, 1);
    ArPose pose(0, -1000, 0);
    robot.moveTo(pose);
+   ArPose prev_pose = robot.getPose();
+   double total_distance = 0;
 
    printf("Connected\n");
    ArUtil::sleep(1000);
@@ -70,13 +73,24 @@ int main( int argc, char **argv ){
 
       dist = (dist > 30000) ? 0 : dist - IDEAL_DISTANCE;
       trackRobot(&robot, dist, angle);
-      log.write(robot.getPose());
+      ArUtil::sleep(500);
+      pose = robot.getPose();
+      log.write(pose);
+      total_distance += getDistance(prev_pose, pose);
+      prev_pose = pose;
 
       // Determine if the robot is done tracking
       isRobotTracking(&iterations_wo_movement, dist, angle);
-      ArUtil::sleep(500);
 
    }
+
+   ArUtil::sleep(1000);
+   log.close();
+
+   ofstream output;
+   output.open("../Data/reactive_dist.dat", ios::out | ios::trunc);
+   output << endl << "# Reactive distance" << endl << total_distance << endl;
+   output.close();
 
    Aria::exit(0);
    return 0;

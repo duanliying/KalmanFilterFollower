@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include "Aria.h"
+#include "Distance.hpp"
 #include "Filter.hpp"
 #include "PathLog.hpp"
 #include "RobotActions.hpp"
@@ -54,28 +55,26 @@ int main( int argc, char **argv ){
    }
 
    robot.comInt(ArCommands::ENABLE, 1);
-   ArPose old_pose(0, -1000, 0);
-   ArPose new_pose;
-   robot.moveTo(old_pose);
+   ArPose p_o(0, -1000, 0);
+   ArPose p_n;
+   robot.moveTo(p_o);
 
    printf("Connected\n");
    ArUtil::sleep(1000);
 
    PathLog log("../Data/reactive.dat");
-   Filter kalmanFilter(1, .9, .1, 1000, 90);
+   Filter kFilter(1, .9, .1, 1000, 90);
 
    // Filter a few times before following
    for( int i = 0; i < 10; i++ ){
       sick.lockDevice();
       dist = sick.currentReadingPolar(-90, 90, &angle);
       sick.unlockDevice();
-      kalmanFilter.filter(&dist, &angle, 0, 0);
+      kFilter.filter(&dist, &angle, 0, 0);
       ArUtil::sleep(100);
    }
 
-   double dx;
-   double dy;
-
+   double total_distance = 0;
    int iterations_wo_movement = 0;
 
    while( iterations_wo_movement < CONSECUTIVE_NON_MOTIONS ){
@@ -85,23 +84,29 @@ int main( int argc, char **argv ){
       sick.unlockDevice();
 
       // Get the amount our robot has moved
-      new_pose = robot.getPose();
-      dx = new_pose.getX() - old_pose.getX();
-      dy = new_pose.getY() - old_pose.getY();
-      kalmanFilter.filter(&dist, &angle, sqrt(dx * dx + dy * dy),
-            new_pose.getTh() - old_pose.getTh());
-      old_pose = new_pose;
+      p_n = robot.getPose();
+      kFilter.filter(&dist, &angle, getDistance(p_n, p_o), getAngle(p_n, p_o));
+      total_distance += getDistance(p_o, p_n);
+      p_o = p_n;
 
       // If nothing is picked up, quit translating
-      dist = (dist > 30000) ? 0 : dist - IDEAL_DISTANCE;
+      dist = calcDistWithBuffer(dist);
       trackRobot(&robot, dist, angle);
+      ArUtil::sleep(500);
       log.write(robot.getPose());
 
       // Determine if the robot is done tracking
       isRobotTracking(&iterations_wo_movement, dist, angle);
-      ArUtil::sleep(500);
 
    }
+
+   ArUtil::sleep(1000);
+   log.close();
+
+   ofstream output;
+   output.open("../Data/kalman_dist.dat", ios::out | ios::trunc);
+   output << "Kalman 1.5 " << total_distance << endl;
+   output.close();
 
    Aria::exit(0);
    return 0;
