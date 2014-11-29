@@ -19,7 +19,7 @@ ArPoseList::ArPoseList(){
 
 ArPoseList::ArPoseList( string file_name ){
 
-   ifstream input("../Data/object.dat", ifstream::in);
+   ifstream input(file_name.c_str(), ifstream::in);
       if( !input.is_open() ){
          cout << "Error opening file" << endl;
          exit(1);
