@@ -9,6 +9,7 @@
 PathLog::PathLog( string filename ){
 
    output.open(filename.c_str(), ios::out | ios::trunc);
+   counter = 0;
 
 }
 
@@ -32,6 +33,22 @@ void PathLog::write( ArPose pose ){
 
    write(pose.getX(), pose.getY(), pose.getTh());
 
+}
+
+void PathLog::write( double difference ){
+    if ( output.is_open() ){
+	output << counter++ << " " << difference << endl;
+    } else{
+	cout << "Unable to log difference, file not open" << endl;
+    }
+}
+
+void PathLog::write( double x, double y ){
+    if ( output.is_open() ){
+	output << x << " " << y << endl;
+    } else{
+	cout << "Unable to log difference, file not open" << endl;
+    }
 }
 
 void PathLog::close(){

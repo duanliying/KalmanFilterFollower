@@ -17,10 +17,13 @@ class PathLog{
 
       void write(double x, double y, double theta);
       void write(ArPose pose);
+      void write(double);
+      void write(double x, double y);
       void close();
 
    private:
       ofstream output;
+      int counter;
 
 };
 

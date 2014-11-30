@@ -6,6 +6,7 @@
 #include "RobotActions.hpp"
 
 #define IDEAL_DISTANCE 1500
+#define PI 3.14159265
 
 using namespace std;
 
@@ -62,14 +63,18 @@ int main( int argc, char **argv ){
    ArUtil::sleep(1000);
 
    PathLog log("../Data/reactive.dat");
+   PathLog pos("../Data/reactive_predict_position.dat");
    int iterations_wo_movement = 0;
-
+   double pred_x, pred_y;
    while( iterations_wo_movement < CONSECUTIVE_NON_MOTIONS ){
 
       // Get updated measurement
       sick.lockDevice();
       dist = sick.currentReadingPolar(-90, 90, &angle);
       sick.unlockDevice();
+      pred_x = pose.getX() + dist * cos((pose.getTh() + angle) * PI / 180);
+      pred_y = pose.getY() + dist * sin((pose.getTh() + angle) * PI / 180);
+      pos.write(pred_x, pred_y);
 
       dist = (dist > 30000) ? 0 : dist - IDEAL_DISTANCE;
       trackRobot(&robot, dist, angle);
@@ -86,6 +91,7 @@ int main( int argc, char **argv ){
 
    ArUtil::sleep(1000);
    log.close();
+   pos.close();
 
    ofstream output;
    output.open("../Data/reactive_dist.dat", ios::out | ios::trunc);
