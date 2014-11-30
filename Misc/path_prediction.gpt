@@ -1,4 +1,4 @@
-# Gnuplot configuration file for Reactive Tracking Graph
+# Gnuplot configuration file for Kalman Tracking Graph
 
 # Set the window title and axis labels
 set term wxt title 'Kalman Predicted Position Graph';
@@ -11,7 +11,7 @@ set grid;
 set xtics 2500;
 set ytics 2500;
 
-# Plot the two graphs
+# Plot the three graphs
 plot '../Data/wander.dat' using 1:2 with lines title 'Object', \
 '../Data/kalman_predict_position.dat' using 1:2 with lines title 'Predict', \
 '../Data/kalman_measure_position.dat' using 1:2 with lines title 'Measure';

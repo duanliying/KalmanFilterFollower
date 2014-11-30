@@ -89,13 +89,20 @@ int main( int argc, char **argv ){
 
       // Get the amount our robot has moved
       p_n = robot.getPose();
+
+      // Log the measured position of the 'object' robot
       meas_x = p_n.getX() + dist * cos((p_n.getTh() + angle) * PI / 180);
       meas_y = p_n.getY() + dist * sin((p_n.getTh() + angle) * PI / 180);
       m_pos.write(meas_x, meas_y);
+
+      // Filter the measured distance and angle
       kFilter.filter(&dist, &angle, getDistance(p_n, p_o), getAngle(p_n, p_o));
+
+      // Log the predicted position of the 'object' robot
       pred_x = p_n.getX() + dist * cos((p_n.getTh() + angle) * PI / 180);
       pred_y = p_n.getY() + dist * sin((p_n.getTh() + angle) * PI / 180);
       p_pos.write(pred_x, pred_y);
+
       total_distance += getDistance(p_o, p_n);
       p_o = p_n;
 
