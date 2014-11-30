@@ -31,6 +31,7 @@
 /Kalman/kalman
 /Reactive/reactive
 /Wander/wander
+/Sensor/sensor
 
 # Data files
 *.dat

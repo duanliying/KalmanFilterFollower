@@ -31,6 +31,9 @@ gnuplot -p ../Misc/reactive.gpt
 ./kalman.sh
 gnuplot -p ../Misc/kalman.gpt
 
+# Path Prediction Graph
+gnuplot -p ../Misc/path_prediction.gpt
+
 # Total Distance Plot
 ./distance_calc.sh
 gnuplot -p ../Misc/total_distance.gpt
