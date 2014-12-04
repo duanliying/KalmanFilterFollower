@@ -1,0 +1,17 @@
+# Gnuplot configuration file for Reactive Tracking Graph
+
+# Set the window title and axis labels
+set term wxt title 'Kalman vs Reactive Graph';
+set xlabel 'x-coordinate(mm)';
+set ylabel 'y-coordinate(mm)';
+
+# Move the legend outside the graph
+set key outside;
+set grid;
+set xtics 5000;
+set ytics 5000;
+
+# Plot the two graphs
+plot '../Data/reactive.dat' using 1:2 with lines title 'Reactive', \
+'../Data/kalman.dat' using 1:2 with lines linecolor rgb "blue" title "Kalman", \
+'../Data/object.dat' using 1:2 with lines linecolor rgb "green" title "Object";

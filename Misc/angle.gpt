@@ -2,7 +2,7 @@
 
 # Set the window title and axis labels
 set term wxt title 'Laser Angle Graph (Initial Guess = 45)';
-set xlabel 't(msec)';
+set xlabel 't(100ms)';
 set ylabel 'Angle(degrees)';
 
 # Move the legend outside the graph
